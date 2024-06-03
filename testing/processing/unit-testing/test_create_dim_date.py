@@ -42,20 +42,3 @@ class TestDateDimensionTable:
         assert result["year"][4] == 2022
         assert result["day_name"][868] == "Saturday"
         assert result["month_name"][867] == "May"
-
-    # def test_create_dim_date_returns_correct_row_data(self):
-    #     data = {'date_id': [pd.Timestamp('2022-01-01')],
-    #         'year': [2022],
-    #         'month': [1],
-    #         'day': [1],
-    #         'day_of_week': [5],
-    #         'day_name': ['Saturday'],
-    #         'month_name': ['January'],
-    #         'quarter': [pd.Period('2022Q1', freq='Q')]
-    #         }
-    #     expected_row = pd.DataFrame(data)
-
-    #     print(expected_row)
-
-    #     result=create_dim_date()
-    #     assert result.iloc[0] == expected_row

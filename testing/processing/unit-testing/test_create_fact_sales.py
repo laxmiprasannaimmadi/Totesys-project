@@ -5,14 +5,6 @@ import pandas as pd
 from datetime import date, time, datetime
 from decimal import Decimal
 
-"""
-test returns df
-test non mutation of input tables
-test length of data
-test columns are correct
-"""
-
-
 @pytest.fixture()
 def test_data():
     with open("./data/table_json_data_fake_ingestion_data/fakedata.json", "r") as f:

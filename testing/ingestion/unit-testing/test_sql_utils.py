@@ -256,7 +256,6 @@ class TestPutIntoIndividualTable:
 class TestGetDatestampFromTable:
 
     def test_get_datestamp_from_table_returns_timestamp(self):
-        # timestamp should = datetime.datetime(2022, 1, 1, 1, 1, 1, 111111)
         test_table_name = "sales_order"
         fake_data = {
             test_table_name: [

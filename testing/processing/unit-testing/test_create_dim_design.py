@@ -45,18 +45,3 @@ class TestDimDesign:
         expected_length = 2
         result = create_dim_design(design_df)
         assert result.shape[0] == expected_length
-
-
-"""
-takes: a df of design data
-returns: a dim table of design data transformed as per star schema
-    design_id int nn
-    design_name varchar nn
-    file_location varchar nn
-    file_name varchar nn
-raises: exception when df cant be found/transformed
-tests:
-    returns df object
-    has expected column names
-    has expected rows
-"""

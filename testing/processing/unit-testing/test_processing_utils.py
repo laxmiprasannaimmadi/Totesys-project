@@ -190,11 +190,3 @@ class TestWriteParquetToS3:
         buffer = io.BytesIO(returned_file["Body"].read())
 
         assert pd.read_parquet(buffer).equals(df)
-
-
-# class TestErrorHandling:
-#     @pytest.mark.it("Tests for error handling on failure to connect to s3 client")
-#     @patch("init_s3_client", return_value="bad_value")
-#     def test_error_handling_for_client_connection(self):
-#         with pytest.raises(ClientError):
-#             init_s3_client
