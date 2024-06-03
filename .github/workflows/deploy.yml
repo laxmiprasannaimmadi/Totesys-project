@@ -1,0 +1,57 @@
+name: ingestion_workflow
+
+on:
+  push:
+    branches:
+      - test
+
+jobs:
+  run-tests: 
+    name: run-tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+      - name: Set Up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Make
+        run: sudo apt install make -y
+      - name: Create Environment
+        run: make requirements
+      - name: Dev Setup
+        run: make dev-setup
+      - name: AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}  
+          aws-region: ${{ secrets.AWS_REGION }}
+      - name: Run Tests
+        run: make run-checks
+  deploy-dev:
+    name: deploy-dev
+    needs: run-tests
+    environment: dev
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+      - name: AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}  
+          aws-region: ${{ secrets.AWS_REGION }}
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v3
+      - name: Terraform Init
+        working-directory: terraform 
+        run: terraform init
+      - name: Plan
+        working-directory: terraform 
+        run: terraform plan
+      - name: Apply
+        working-directory: terraform 
+        run: terraform apply -auto-approve
