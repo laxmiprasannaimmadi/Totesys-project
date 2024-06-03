@@ -12,7 +12,7 @@ data "archive_file" "ingestion_lambda_file" {
 data "archive_file" "dependancies" {
   type = "zip"
   output_file_mode = "0666"
-  source_dir = "../aws_depedancy_layers/ingestion_layer"
+  source_dir = "../aws_dependency_layers/ingestion_layer"
   output_path = "../python.zip"
 }
 
@@ -73,7 +73,7 @@ data "archive_file" "processing_lambda_data" {
 data "archive_file" "processing_dependencies" {
   type        = "zip"
   output_file_mode = "0666"
-  source_dir = "../aws_depedancy_layers/processing_layer"
+  source_dir = "../aws_dependency_layers/processing_layer"
   output_path = "../processing_requirements.zip"       
 }
 
@@ -126,7 +126,7 @@ data "archive_file" "warehouse_lambda_data" {
 data "archive_file" "warehouse_dependencies" {
   type        = "zip"
   output_file_mode = "0666"
-  source_dir = "../aws_depedancy_layers/warehouse_layer"
+  source_dir = "../aws_dependency_layers/warehouse_layer"
   output_path = "../warehouse_requirements.zip"       
 }
 

@@ -46,6 +46,7 @@ def dummy_ingestion_bucket(s3_client):
         Key="test_data.json",
     )
 
+
 @pytest.fixture
 def test_data_to_df():
     with open("data/table_json_data_fake_ingestion_data/fakedata.json") as f:

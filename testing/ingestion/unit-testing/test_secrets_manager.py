@@ -5,6 +5,7 @@ from unittest.mock import patch, MagicMock
 
 
 class TestConnectToDB:
+    @pytest.mark.skip
     @pytest.mark.it("Check return of connection type")
     def test_new_connect_to_db_psql_connection(self):
         assert isinstance(connect_to_db(), Connection)

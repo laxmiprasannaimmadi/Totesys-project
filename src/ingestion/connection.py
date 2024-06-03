@@ -5,7 +5,6 @@ from pg8000.native import Connection
 
 
 def connect_to_db():
-
     """
     Gathers secrets from AWS to fill in the information required
     to create a connection to the PSQL database using pg8000.
@@ -42,7 +41,6 @@ def connect_to_db():
 
 
 def close_connection(conn):
-    
     """
     Closes connection to the PSQL database
 

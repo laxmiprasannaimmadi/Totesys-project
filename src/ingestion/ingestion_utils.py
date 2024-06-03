@@ -6,7 +6,6 @@ from decimal import Decimal
 
 
 def init_s3_client():
-
     """
     Initialises an s3 client using boto3.
 
@@ -20,13 +19,12 @@ def init_s3_client():
         session = botocore.session.get_session()
         s3_client = session.create_client("s3")
         return s3_client
-    
+
     except Exception:
         raise ConnectionRefusedError("Failed to connect to s3 client")
 
 
 def get_current_timestamp(s3_client):
-
     """
     Gets X timestamp to query data onward from.
 
@@ -47,7 +45,7 @@ def get_current_timestamp(s3_client):
 
         dt = datetime.datetime.fromisoformat(dt_str)
         return dt
-    
+
     except Exception:
         raise TypeError(
             """An error occured accessing the timestamp from s3 bucket. 
@@ -56,7 +54,6 @@ def get_current_timestamp(s3_client):
 
 
 def query_updated_table_information(conn, table, dt):
-
     """
     Querys the PSQL database for current information and returns it in a JSON format.
 
@@ -81,21 +78,20 @@ def query_updated_table_information(conn, table, dt):
         output_table = put_into_individual_table(table, result, columns)
 
         return output_table
-    
+
     except Exception as e:
         print("An error occurred in DB query:", e)
         return None
 
 
 def put_into_individual_table(table, result, columns):
-
     """
     Reformats the query data into JSON.
 
             Parameters:
                     table: The table name which is being formatted.
                     result: The query information.
-                    columns: The 
+                    columns: The
 
             Returns:
                     JSON of data.
@@ -107,7 +103,6 @@ def put_into_individual_table(table, result, columns):
 
 
 def get_datestamp_from_table(individual_table, table_name):
-
     """
     Takes the 'last_updated' timestamp from the final entry in the data.
 
@@ -127,7 +122,6 @@ def get_datestamp_from_table(individual_table, table_name):
 
 
 def get_datetime_now():
-
     """
     Gets the realworld datetime to create a unique key for each segment of data.
 
@@ -144,7 +138,6 @@ def get_datetime_now():
 
 
 def put_object_in_bucket(table_name, input_table, s3_client, bucket_name, dt_now):
-
     """
     Puts JSON data into s3 storage.
 
@@ -168,7 +161,6 @@ def put_object_in_bucket(table_name, input_table, s3_client, bucket_name, dt_now
 
 
 def put_timestamp_in_s3(timestamp, s3_client):
-
     """
     Puts timestamp data into s3 storage.
 
@@ -179,7 +171,7 @@ def put_timestamp_in_s3(timestamp, s3_client):
             Returns:
                     Response message from s3 client.
     """
-    
+
     try:
         dt = s3_client.put_object(
             Body=json.dumps(timestamp.isoformat()),
@@ -192,7 +184,6 @@ def put_timestamp_in_s3(timestamp, s3_client):
 
 
 def initialise_bucket_with_timestamp(s3_client):
-
     """
     Puts timestamp data into s3 storage.
 
@@ -203,7 +194,7 @@ def initialise_bucket_with_timestamp(s3_client):
             Returns:
                     No output.
     """
-     
+
     dt = datetime.datetime(2022, 1, 1, 1, 1, 1, 111111)
     response = s3_client.put_object(
         Body=json.dumps(dt.isoformat()),
@@ -214,7 +205,6 @@ def initialise_bucket_with_timestamp(s3_client):
 
 
 def convert_datetimes_and_decimals(unconverted_json):
-
     """
     Converts datetimes and decimals to strings within the JSON file.
 
@@ -224,7 +214,7 @@ def convert_datetimes_and_decimals(unconverted_json):
             Returns:
                     JSON of data with isoformatted datetimes and decimals as strings.
     """
-     
+
     for k, v in unconverted_json.items():
         for entry in v:
             for m, n in entry.items():
@@ -236,7 +226,6 @@ def convert_datetimes_and_decimals(unconverted_json):
 
 
 def add_ts_for_processing_bucket(s3_client, dt_now):
-
     """
     Updates the timestamp in the processing bucket to help select keys for processing in s3 bucket.
 
@@ -255,10 +244,9 @@ def add_ts_for_processing_bucket(s3_client, dt_now):
 
 
 def initialise_process_bucket_with_timestamp(s3_client):
-
     """
     To be run with the creation of the lambda to begin the automatic process of ingesting data.
-    Done by setting an initial timestamp related to the earliest given timestamp within the 
+    Done by setting an initial timestamp related to the earliest given timestamp within the
     original data set.
 
             Parameters:

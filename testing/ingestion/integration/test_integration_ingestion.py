@@ -85,7 +85,7 @@ def test_ingestion_lambda_handler_as_a_whole(
     mock_table_data,
     mock_latest_timestamp,
     mock_dt_now,
-    ):
+):
 
     mock_connect_to_db.return_value = mock_conn
     mock_init_s3_client.return_value = mock_s3_client
