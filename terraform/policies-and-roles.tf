@@ -29,7 +29,14 @@ resource "aws_iam_role" "lambda_role" {
 data "aws_iam_policy_document" "s3_document" {
   statement {
 
-    actions = ["*"]
+    actions = [
+      "s3:GetObject",
+      "s3:PutObject",
+      "s3:DeleteObject",
+      "s3:ListBucket",
+      "s3:GetBucketLocation",
+      "s3:ListObjectsV2"
+    ]
 
     resources = [
       "${aws_s3_bucket.ingestion_bucket.arn}/*",
@@ -86,7 +93,9 @@ resource "aws_iam_role_policy_attachment" "lambda_cw_policy_attachment" {
 data "aws_iam_policy_document" "ingestion_secrets_policy_document" {
   statement {
     actions   = ["secretsmanager:GetSecretValue"]
-    resources = ["*"]
+    resources = [
+      "arn:aws:secretsmanager:eu-west:ACCOUNT_ID:secret:SECRET_ID"
+    ]
   }
 }
 
@@ -132,7 +141,14 @@ resource "aws_iam_role" "processing_lambda_role" {
 data "aws_iam_policy_document" "processing_s3_document" {
   statement {
 
-    actions = ["*"]
+    actions = [
+      "s3:GetObject",
+      "s3:PutObject",
+      "s3:DeleteObject",
+      "s3:ListBucket",
+      "s3:GetBucketLocation",
+      "s3:ListObjectsV2"
+    ]
 
     resources = [
         "${aws_s3_bucket.ingestion_bucket.arn}",
@@ -216,7 +232,14 @@ resource "aws_iam_role" "warehouse_lambda_role" {
 data "aws_iam_policy_document" "warehouse_s3_document" {
   statement {
 
-    actions = ["*"]
+    actions = [
+      "s3:GetObject",
+      "s3:PutObject",
+      "s3:DeleteObject",
+      "s3:ListBucket",
+      "s3:GetBucketLocation",
+      "s3:ListObjectsV2"
+    ]
 
     resources = [
         "${aws_s3_bucket.processing_bucket.arn}",
@@ -272,7 +295,9 @@ resource "aws_iam_role_policy_attachment" "warehouse_lambda_cw_policy_attachment
 data "aws_iam_policy_document" "warehouse_secrets_policy_document" {
   statement {
     actions   = ["secretsmanager:GetSecretValue"]
-    resources = ["*"]
+    resources = [
+      "arn:aws:secretsmanager:eu-west:ACCOUNT_ID:secret:SECRET_ID"
+    ]
   }
 }
 
